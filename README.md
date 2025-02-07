@@ -30,3 +30,8 @@ Check out the live application on Vercel:
    ```bash
    git clone https://github.com/Krishna200608/ToDoList.git
    cd ToDoList
+
+2. **To install the necessary dependencies for the ToDoList project, run the following command in your terminal:**
+
+```bash
+npm install
