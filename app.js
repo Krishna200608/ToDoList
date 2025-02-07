@@ -111,5 +111,13 @@ app.get("/about", (req, res) => {
   res.render("about");
 });
 
-// ✅ Export app instead of running it (Vercel handles it)
+// For local development, run the server on port 3000 if not deployed on Vercel.
+if (!process.env.VERCEL) {
+  const port = process.env.PORT || 3000
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+}
+
+// Export the app for deployment (e.g., Vercel)
 export default app;
