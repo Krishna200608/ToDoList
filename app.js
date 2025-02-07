@@ -112,36 +112,32 @@ app.post("/delete", function(req, res){
   }
 })
 
-app.get("/:customListName", function(req, res){
+app.get("/:customListName", function(req, res) {
   let customListName = _.capitalize(req.params.customListName);
 
-  List.findOne({name: customListName})
-  .then((foundList)=>{
-    if(!foundList){
-      // console.log("Doesn't Exists");
-      const list = new List({
-        name: customListName,
-        items : defaultItems
-      });
-     list.save();
-     res.redirect("/" + customListName);
-    }
-    else if(foundList.items.length == 0){
-      List.updateMany(
-        {name: foundList.name}, 
-        {$push : {items : {$each : defaultItems} }}
-      )
-      .catch((err)=>console.log("Failed to insert default items in the custom list ", err));
-      res.redirect("/" + customListName);
-    }
-    else{
-      // console.log("Exists");
-      res.render("list", { listTitle: foundList.name, newListItems : foundList.items})
-    }
+  List.findOne({ name: customListName })
+    .then((foundList) => {
+      if (!foundList) {
+        // List doesn't exist, create a new one (empty list)
+        const list = new List({
+          name: customListName,
+          items: [] // Empty list instead of default items
+        });
 
-  })
-  .catch((err)=>console.log("Error!"));
-})
+        list.save().then(() => {
+          //console.log(`Created new empty list: ${customListName}`);
+          res.redirect("/" + customListName);
+        }).catch(err => console.log("Error saving new list:", err));
+
+      } else {
+        // List exists, render it even if it's empty
+        //console.log(`Using existing list: ${customListName}`);
+        res.render("list", { listTitle: foundList.name, newListItems: foundList.items });
+      }
+    })
+    .catch(err => console.log("Error fetching list:", err));
+});
+
 
 
 app.get("/about", (req, res)=>{

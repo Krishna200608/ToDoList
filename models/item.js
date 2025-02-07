@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config(); // Load environment variables
 
-mongoose.connect("mongodb+srv://KrishnaSikheriya:Wmj4lka7NexQ0kHL@cluster0.ix5ng.mongodb.net/todolistDB")
+mongoose.connect(process.env.MONGO_URI)
 .then(()=>console.log("Successfully connected to MongoDB"))
 .catch((err)=>console.log("Connection failed : ",err));
 
