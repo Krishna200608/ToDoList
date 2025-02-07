@@ -35,9 +35,12 @@ const defaultItems = [item1, item2, item3];
 
 
 
+const day = getDay();
 
 
 app.get("/", (req, res) => {
+
+  //console.log(day);
 
   Item.find({})
   .then((foundItems)=>{
@@ -49,7 +52,7 @@ app.get("/", (req, res) => {
       
       res.redirect("/");
     } else {
-      res.render("list", { listTitle: "Today", newListItems : foundItems});
+      res.render("list", { listTitle: day , newListItems : foundItems});
     }
   })
   .catch((err)=>console.log("Failed to fetch!", err));
@@ -65,19 +68,21 @@ app.post("/", (req, res) => {
     name: itemName
   });
 
-  if(listName === "Today"){
-    item.save();
-    res.redirect("/");
+  if(listName === day){
+    item.save()
+    .then(()=>{ res.redirect("/") })
+    .catch(err => console.log("Error saving item:", err));
   } else {
     List.findOne({name : listName})
     .then((foundList)=>{
       foundList.items.push(item);
-      foundList.save();
-      res.redirect("/" + listName)
+      foundList.save()
+      .then(()=>{
+        res.redirect("/" + listName)
+      })
     })
     .catch((err)=>console.log("Failed to load the webpage",err));
   }
-
 })
 
 app.post("/delete", function(req, res){
@@ -86,7 +91,7 @@ app.post("/delete", function(req, res){
   const listName = req.body.listName;
   //console.log(checkedItemId);
 
-  if(listName == "Today"){
+  if(listName == day){
     Item.findByIdAndDelete(checkedItemId)
     .then(()=>{ 
       //console.log("Item deleted")
