@@ -13,7 +13,7 @@ A simple ToDoList web application built with **Node.js**, **Express**, **EJS**, 
 ## Live Demo
 
 Check out the live application on Vercel:  
-[https://todolist-v1-i0btcebyr-krishna-sikheriyas-projects.vercel.app/](https://todolist-v1-i0btcebyr-krishna-sikheriyas-projects.vercel.app/)
+[https://todolist-v1-two.vercel.app/](https://todolist-v1-two.vercel.app/)
 
 ## Getting Started
 
